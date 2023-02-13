@@ -74,7 +74,6 @@ it shows a link if you click it redirects you to the Github for creating a new p
 
 GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 
-[product-screenshot]: images/screenshot.png
 [gitc-v1.0.0]: https://www.conventionalcommits.org/en/v1.0.0/
 [Java-url]: https://www.java.com/
 [SpringBoot-url]: https://spring.io/projects/spring-boot
