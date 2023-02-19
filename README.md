@@ -1,16 +1,7 @@
-
-<br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template"></a>
-<h3 align="center">Eris library</h3>
-  <p align="center">
-    The open source and scalable project for manage public library
-  </p>
-</div>
-
+# Eris Library  [![Codacy Security Scan](https://github.com/samuellme/eris-library/actions/workflows/codacy.yml/badge.svg)](https://github.com/samuellme/eris-library/actions/workflows/codacy.yml)
+####    The open source and scalable project for manage public library
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-...
 
 ### Built With
 
