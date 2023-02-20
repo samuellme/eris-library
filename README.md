@@ -1,4 +1,6 @@
-# Eris Library  [![Codacy Security Scan](https://github.com/samuellme/eris-library/actions/workflows/codacy.yml/badge.svg)](https://github.com/samuellme/eris-library/actions/workflows/codacy.yml)
+# Eris Library  
+[![Codacy Security Scan](https://github.com/samuellme/eris-library/actions/workflows/codacy.yml/badge.svg)](https://github.com/samuellme/eris-library/actions/workflows/codacy.yml)
+[![Pipeline](https://github.com/samuellme/eris-library/actions/workflows/maven.yaml/badge.svg)](https://github.com/samuellme/eris-library/actions/workflows/maven.yaml)
 ####    The open source and scalable project for manage public library
 <!-- ABOUT THE PROJECT -->
 ## About The Project
