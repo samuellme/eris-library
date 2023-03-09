@@ -1,0 +1,482 @@
+openapi: 3.0.3
+
+info:
+  title: Eris Library - OpenAPI 3.0
+  description:
+    The open source and scalable project for manage public library
+  license:
+    name: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: 1.0.0
+servers:
+  - url: localhost:8080
+tags:
+  - name: books
+    description: Everything about books
+  - name: members
+    description: members information
+  - name: loans
+
+paths:
+  /books:
+    put:
+      tags:
+        - books
+      summary: Update an existing book
+      operationId: updateBook
+      requestBody:
+        description: Update an existent book
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: book not found
+        '405':
+          description: Validation exception
+      security:
+        - library_auth:
+            - write:books
+            - read:books
+    post:
+      tags:
+        - books
+      summary: Add a new book to the library
+      operationId: addBook
+      requestBody:
+        description: Create a new book in the library
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+        '405':
+          description: Invalid input
+      security:
+        - library_auth:
+            - write:books
+            - read:books
+    get:
+      summary: Search for books by title and/or author
+      description: Returns a list of books matching the search criteria
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+          description: Title of the book to search for
+        - in: query
+          name: author
+          schema:
+            type: string
+          description: Author of the book to search for
+      responses:
+        '200':
+          description: A list of books matching the search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid ID supplied
+      security:
+        - api_key: [ ]
+        - library_auth:
+            - write:books
+            - read:books
+  /books/{bookId}:
+    get:
+      tags:
+        - books
+      summary: Find book by ID
+      description: Returns a single book
+      operationId: getBookById
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Book not found
+      security:
+        - api_key: []
+        - library_auth:
+            - write:books
+            - read:books
+    delete:
+      tags:
+        - books
+      summary: Deletes a book
+      description: delete a book
+      operationId: deleteBook
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid book value
+      security:
+        - library_auth:
+            - write:books
+            - read:books
+  /books/{bookId}/cover:
+    get:
+      summary: Get the URL of a book cover by ID
+      description: Returns the URL for the cover image of the book with the specified ID
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: The ID of the book to get the cover URL for
+      responses:
+        '200':
+          description: The URL for the cover image of the specified book
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL for the cover image of the book
+        '404':
+          description: The specified book ID was not found
+  /members:
+    get:
+      summary: Search for member by name
+      description: Returns a list of members matching the search criteria
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: name of the member to search for
+      responses:
+        '200':
+          description: A list of members matching the search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        '400':
+          description: Invalid ID supplied
+      security:
+        - api_key: [ ]
+        - library_auth:
+            - write:members
+            - read:members
+    post:
+      tags:
+        - members
+      summary: Add a new member to the library
+      description: Add a new member to the library
+      operationId: addMember
+      requestBody:
+        description: Create a new member in the library
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+
+        '405':
+          description: Invalid input
+      security:
+        - library_auth:
+            - write:members
+            - read:members
+
+  /members/{memberId}:
+    get:
+      tags:
+        - members
+      summary: Find member by ID
+      description: Returns a member
+      operationId: getMemberById
+      parameters:
+        - name: memberId
+          in: path
+          description: ID of member to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: member not found
+      security:
+        - api_key: [ ]
+        - library_auth:
+            - write:members
+            - read:members
+    delete:
+      tags:
+        - members
+      summary: Delete members order by ID
+      description: Delete members order by ID
+      operationId: deleteOrder
+      parameters:
+        - name: memberId
+          in: path
+          description: ID of the member that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+
+  /loans:
+
+    post:
+      tags:
+        - loans
+      summary: Add a new book loans to the database
+      operationId: addBookLoans
+      requestBody:
+        description: Create a new book loans in the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Loan'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+
+        '405':
+          description: Invalid input
+      security:
+        - library_auth:
+            - write:loans
+            - read:loans
+
+  /loans/{loansId}:
+    get:
+
+      summary: Find book loans by UUID
+      operationId: getBookLoanById
+      parameters:
+        - name: loansId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Book loan not found
+      security:
+        - api_key: [ ]
+        - library_auth:
+            - write:loans
+            - read:loans
+    delete:
+
+      summary: Soft deletes a book loan information
+      operationId: softDeleteBook
+      parameters:
+        - name: loansId
+          in: path
+          description: ID of book loan to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '400':
+          description: Invalid book loan value
+      security:
+        - library_auth:
+            - write:loans
+            - read:loans
+
+components:
+  schemas:
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        memberCode:
+          type: string
+          format: uuid
+          example: 9134f3bf-cd75-40d9-9ee7-9bfd89b9b513
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: '12345'
+        userStatus:
+          type: integer
+          description: User Status
+          format: int32
+          example: 1
+    Loan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9134f3bf-cd75-40d9-9ee7-9bfd89b9b513
+        memberCode:
+          type: string
+          format: uuid
+          example: 9134f3bf-cd75-40d9-9ee7-9bfd89b9b513
+        bookId:
+          type: string
+          format: uuid
+          example: ef62546e-87fa-4f88-a379-4088489e46ee
+        startLoanDateTime:
+          type: string
+          format: date
+          example: 2018-03-20T09:12:28Z
+        endLoanDateTime:
+          type: string
+          format: date-time
+          example: 2018-03-28T09:12:28Z
+        returnBookDatetime:
+          type: string
+          format: date
+          example: 2018-03-20T09:12:28Z
+        returnBookStatus:
+          type: integer
+          format: int64
+          example: 10
+
+
+    Book:
+
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ef62546e-87fa-4f88-a379-4088489e46ee
+        title:
+          type: string
+          example: 1984
+        author:
+          type: string
+          example: George Orwell
+        isbn:
+          type: string
+          example: 978-0063012097
+        thumbnail:
+          type: string
+          format: byte    # base64-encoded file contents
+          example: 'SGVsbG93IFdvcmxkICEK'
+        page:
+          type: integer
+          format: int64
+          example: 645
+        category:
+          type: string
+          example: Novel
+        reviews:
+          type: integer
+          format: int64
+          example: 123
+        rating:
+          type: integer
+          format: int64
+          example: 654
+
+  securitySchemes:
+    library_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:books: modify books in your account
+            read:books: read your books
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
